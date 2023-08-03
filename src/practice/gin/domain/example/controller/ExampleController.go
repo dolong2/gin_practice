@@ -1,11 +1,9 @@
 package controller
 
 import (
+	"gin_practice/src/practice/gin/domain/example/service"
 	"github.com/gin-gonic/gin"
-	"net/http"
 )
-
-var db = make(map[string]string)
 
 func SetupRouter() *gin.Engine {
 	// Disable Console Color
@@ -14,18 +12,12 @@ func SetupRouter() *gin.Engine {
 
 	// Ping test
 	r.GET("/ping", func(c *gin.Context) {
-		c.String(http.StatusOK, "pong")
+		service.Pong(c)
 	})
 
 	// Get user value
 	r.GET("/user/:name", func(c *gin.Context) {
-		user := c.Params.ByName("name")
-		value, ok := db[user]
-		if ok {
-			c.JSON(http.StatusOK, gin.H{"user": user, "value": value})
-		} else {
-			c.JSON(http.StatusOK, gin.H{"user": user, "status": "no value"})
-		}
+		service.GetUser(c)
 	})
 
 	// Authorized group (uses gin.BasicAuth() middleware)
@@ -50,17 +42,7 @@ func SetupRouter() *gin.Engine {
 	  	-d '{"value":"bar"}'
 	*/
 	authorized.POST("admin", func(c *gin.Context) {
-		user := c.MustGet(gin.AuthUserKey).(string)
-
-		// Parse JSON
-		var json struct {
-			Value string `json:"value" binding:"required"`
-		}
-
-		if c.Bind(&json) == nil {
-			db[user] = json.Value
-			c.JSON(http.StatusOK, gin.H{"status": "ok"})
-		}
+		service.AddAdmin(c)
 	})
 
 	return r

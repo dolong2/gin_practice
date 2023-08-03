@@ -1,6 +1,8 @@
 package main
 
-import "gin_practice/src/practice/gin/domain/controller"
+import (
+	"gin_practice/src/practice/gin/domain/example/controller"
+)
 
 func main() {
 	r := controller.SetupRouter()
