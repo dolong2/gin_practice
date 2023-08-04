@@ -1,7 +1,8 @@
 package main
 
 import (
-	"gin_practice/src/practice/gin/domain/example/controller"
+	exampleController "gin_practice/src/practice/gin/domain/example/controller"
+	userController "gin_practice/src/practice/gin/domain/user/controller"
 	"github.com/gin-gonic/gin"
 )
 
@@ -13,6 +14,7 @@ func main() {
 
 func setupRouter() *gin.Engine {
 	engine := gin.Default()
-	controller.SetupRouter(engine)
+	exampleController.SetupRouter(engine)
+	userController.SetUpUserController(engine)
 	return engine
 }
