@@ -5,10 +5,9 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter() *gin.Engine {
+func SetupRouter(r *gin.Engine) *gin.Engine {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
-	r := gin.Default()
 
 	// Ping test
 	r.GET("/ping", func(c *gin.Context) {
