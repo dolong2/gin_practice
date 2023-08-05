@@ -1,19 +1,10 @@
 package exception
 
-import "strconv"
+import (
+	"gin_practice/src/practice/gin/global/exception"
+	"net/http"
+)
 
-type UserAlreadyExistsException struct {
-	Code int
-	Msg  string
-}
-
-func (ex UserAlreadyExistsException) Error() string {
-	return "에러코드: " + strconv.Itoa(ex.Code) + "\n에러메시지: " + ex.Msg
-}
-
-func InitUserAlreadyExistsException() UserNotFoundException {
-	exception := UserNotFoundException{}
-	exception.Code = 404
-	exception.Msg = "해당 유저를 찾을 수 없음"
-	return exception
+func UserAlreadyExistsException() exception.GlobalException {
+	return exception.InitGlobalException(http.StatusBadRequest, "이미 해당 유저가 존재함")
 }

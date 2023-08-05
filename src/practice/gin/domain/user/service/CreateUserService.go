@@ -8,7 +8,7 @@ import (
 
 func CreateUser(request request.SignUpRequest) error {
 	if repository.ExistsByEmail(request.Email) {
-		return exception.InitUserAlreadyExistsException()
+		return exception.UserAlreadyExistsException()
 	}
 	repository.Save(request.ToUser())
 	return nil
