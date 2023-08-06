@@ -22,6 +22,7 @@ func SetUpUserController(r *gin.Engine) *gin.Engine {
 			globalException := err.(exception.GlobalException)
 			response := globalException.ToErrorResponse()
 			c.JSON(globalException.Code, response)
+			return
 		}
 		c.Status(http.StatusCreated)
 	})
