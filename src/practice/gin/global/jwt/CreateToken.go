@@ -3,6 +3,7 @@ package jwt
 import (
 	"github.com/dgrijalva/jwt-go"
 	"os"
+	"strconv"
 	"time"
 )
 
@@ -11,12 +12,14 @@ var refreshType = "REFRESH"
 
 func CreateAccessToken(userEmail string) (string, error) {
 	accessSecret := os.Getenv("ACCESS_SECRET")
-	return createToken(userEmail, accessSecret, accessType, 15)
+	accessExp, _ := strconv.Atoi(os.Getenv("ACCESS_EXP"))
+	return createToken(userEmail, accessSecret, accessType, accessExp)
 }
 
 func CreateRefreshToken(userEmail string) (string, error) {
 	refreshSecret := os.Getenv("REFRESH_SECRET")
-	return createToken(userEmail, refreshSecret, accessType, 60*24)
+	refreshExp, _ := strconv.Atoi(os.Getenv("ACCESS_EXP"))
+	return createToken(userEmail, refreshSecret, accessType, refreshExp)
 }
 
 func createToken(userEmail string, secret string, tokenType string, ttl int) (string, error) {
