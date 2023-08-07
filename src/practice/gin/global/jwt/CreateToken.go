@@ -22,7 +22,7 @@ func CreateRefreshToken(userEmail string) (string, error) {
 func createToken(userEmail string, secret string, tokenType string) (string, error) {
 	atClaims := jwt.MapClaims{}
 	atClaims["authorized"] = true
-	atClaims["user_id"] = userEmail
+	atClaims["user_email"] = userEmail
 	atClaims["type"] = tokenType
 	atClaims["exp"] = time.Now().Add(time.Minute * 15).Unix()
 	at := jwt.NewWithClaims(jwt.SigningMethodHS256, atClaims)
