@@ -8,10 +8,10 @@ type SignUpRequest struct {
 	Name     string `json:"name"`
 }
 
-func (request SignUpRequest) ToUser() entity.User {
+func (request SignUpRequest) ToUser(encodedPassword string) entity.User {
 	return entity.User{
 		Email:    request.Email,
-		Password: request.Password,
+		Password: encodedPassword,
 		Name:     request.Name,
 	}
 }
