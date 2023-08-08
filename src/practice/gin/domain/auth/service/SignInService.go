@@ -8,6 +8,7 @@ import (
 	userRepository "gin_practice/src/practice/gin/domain/user/repository"
 	"gin_practice/src/practice/gin/global/jwt"
 	jwtException "gin_practice/src/practice/gin/global/jwt/exception"
+	"gin_practice/src/practice/gin/global/passwordEncoder"
 )
 
 func SignIn(request request.SignInRequest) (response.SignInResponse, error) {
@@ -15,7 +16,7 @@ func SignIn(request request.SignInRequest) (response.SignInResponse, error) {
 		return response.SignInResponse{}, userException.UserNotFoundException()
 	}
 	user, _ := userRepository.GetByEmail(request.Email)
-	if user.Password != request.Password {
+	if !passwordEncoder.MatchPassword(request.Password, user.Password) {
 		return response.SignInResponse{}, exception.PasswordMisMatchException()
 	}
 	accessToken, accessErr := jwt.CreateAccessToken(user.Email)
