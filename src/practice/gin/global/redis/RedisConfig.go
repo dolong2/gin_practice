@@ -26,6 +26,16 @@ func GetRedisConn() (*redis.Conn, error) {
 	return connection, nil
 }
 
+func SaveValue(hashName string, key string, value string, ttl int) error {
+	if connection == nil {
+		return exception.ConnectionNullException()
+	}
+	conn := *connection
+	conn.Do("HMSET", hashName+":1", key, value)
+	conn.Do("EXPIRE", key, ttl)
+	return nil
+}
+
 func CloseConn() error {
 	if connection == nil {
 		return exception.ConnectionNullException()
