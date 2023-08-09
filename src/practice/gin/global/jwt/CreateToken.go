@@ -18,7 +18,7 @@ func CreateAccessToken(userEmail string) (string, error) {
 
 func CreateRefreshToken(userEmail string) (string, error) {
 	refreshSecret := os.Getenv("REFRESH_SECRET")
-	refreshExp, _ := strconv.Atoi(os.Getenv("ACCESS_EXP"))
+	refreshExp, _ := strconv.Atoi(os.Getenv("REFRESH_EXP"))
 	return createToken(userEmail, refreshSecret, accessType, refreshExp)
 }
 
