@@ -20,14 +20,14 @@ func SetUpRedis() (*redis.Conn, error) {
 }
 
 func GetRedisConn() (*redis.Conn, error) {
-	if connection != nil {
+	if connection == nil {
 		return nil, exception.ConnectionNullException()
 	}
 	return connection, nil
 }
 
 func CloseConn() error {
-	if connection != nil {
+	if connection == nil {
 		return exception.ConnectionNullException()
 	}
 	(*connection).Close()
