@@ -10,6 +10,7 @@ import (
 	jwtException "gin_practice/src/practice/gin/global/jwt/exception"
 	"gin_practice/src/practice/gin/global/passwordEncoder"
 	"gin_practice/src/practice/gin/global/redis"
+	"time"
 )
 
 func SignIn(request request.SignInRequest) (response.SignInResponse, error) {
@@ -26,5 +27,7 @@ func SignIn(request request.SignInRequest) (response.SignInResponse, error) {
 	if accessErr != nil || refreshErr != nil {
 		return response.SignInResponse{}, jwtException.JwtGenerateException()
 	}
-	return response.ToTokenResponse(accessToken, refreshToken), nil
+	accessExp := jwt.GetAccessExp()
+	refreshExp := jwt.GetRefreshExp()
+	return response.ToTokenResponse(accessToken, refreshToken, time.Now().Add(accessExp), time.Now().Add(refreshExp)), nil
 }
