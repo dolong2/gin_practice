@@ -35,13 +35,3 @@ func createToken(userEmail string, secret string, tokenType string, ttl int) (st
 	}
 	return token, nil
 }
-
-func getAccessExp() time.Duration {
-	exp, _ := strconv.Atoi(os.Getenv("ACCESS_EXP"))
-	return time.Duration(exp) * time.Minute
-}
-
-func getRefreshExp() time.Duration {
-	exp, _ := strconv.Atoi(os.Getenv("REFRESH_EXP"))
-	return time.Duration(exp) * time.Minute
-}
