@@ -10,8 +10,6 @@ import (
 	jwtException "gin_practice/src/practice/gin/global/jwt/exception"
 	"gin_practice/src/practice/gin/global/passwordEncoder"
 	"gin_practice/src/practice/gin/global/redis"
-	"os"
-	"strconv"
 )
 
 func SignIn(request request.SignInRequest) (response.SignInResponse, error) {
@@ -24,8 +22,7 @@ func SignIn(request request.SignInRequest) (response.SignInResponse, error) {
 	}
 	accessToken, accessErr := jwt.CreateAccessToken(user.Email)
 	refreshToken, refreshErr := jwt.CreateRefreshToken(user.Email)
-	refreshExp, _ := strconv.Atoi(os.Getenv("REFRESH_EXP"))
-	redis.SaveValue("RefreshToken", refreshToken, user.Email, refreshExp)
+	redis.SaveValue("RefreshToken", refreshToken, user.Email, int(jwt.GetRefreshExp().Microseconds()))
 	if accessErr != nil || refreshErr != nil {
 		return response.SignInResponse{}, jwtException.JwtGenerateException()
 	}
