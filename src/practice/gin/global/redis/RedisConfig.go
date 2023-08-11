@@ -36,6 +36,15 @@ func SaveValue(hashName string, key string, value string, ttl int) error {
 	return nil
 }
 
+func DeleteValue(hashName string, key string) error {
+	if connection == nil {
+		return exception.ConnectionNullException()
+	}
+	conn := *connection
+	conn.Do("DEL", hashName+":1", key)
+	return nil
+}
+
 func CloseConn() error {
 	if connection == nil {
 		return exception.ConnectionNullException()

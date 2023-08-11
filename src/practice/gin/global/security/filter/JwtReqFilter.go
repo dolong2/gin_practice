@@ -8,7 +8,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func JwtReqFilterGroup(c *gin.Context) {
+func JwtReqFilter(c *gin.Context) {
 	user, err := jwt.GetCurrentUser(c.Request)
 	if err != nil {
 		var globalException exception.GlobalException
