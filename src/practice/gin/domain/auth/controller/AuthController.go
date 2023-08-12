@@ -33,7 +33,7 @@ func SetUpAuthController(r *gin.Engine) *gin.Engine {
 	})
 
 	group.DELETE("", func(c *gin.Context) {
-		err := service.SignOut()
+		err := service.SignOut(c)
 		switch err.(type) {
 		case exception.GlobalException:
 			fmt.Println(err.Error())

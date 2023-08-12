@@ -17,5 +17,5 @@ func JwtReqFilter(c *gin.Context) {
 		c.JSON(globalException.Code, response)
 		c.Abort()
 	}
-	security.SetUser(*user)
+	security.SetUser(c, *user)
 }
