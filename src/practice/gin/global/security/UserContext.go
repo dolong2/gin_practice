@@ -3,17 +3,18 @@ package security
 import (
 	"gin_practice/src/practice/gin/domain/user/entity"
 	"gin_practice/src/practice/gin/global/security/exception"
+	"github.com/gin-gonic/gin"
 )
 
-var currentUser *entity.User
-
-func GetUser() (*entity.User, error) {
-	if currentUser == nil {
+func GetUser(c *gin.Context) (*entity.User, error) {
+	value, exists := c.Get("currentUser")
+	if !exists {
 		return nil, exception.ContextEmptyException()
 	}
-	return currentUser, nil
+	user := value.(entity.User)
+	return &user, nil
 }
 
-func SetUser(user entity.User) {
-	currentUser = &user
+func SetUser(c *gin.Context, user entity.User) {
+	c.Set("currentUser", user)
 }
