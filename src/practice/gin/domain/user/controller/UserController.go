@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"gin_practice/src/practice/gin/domain/user/controller/dto/request"
 	"gin_practice/src/practice/gin/domain/user/service"
 	"gin_practice/src/practice/gin/global/exception"
@@ -17,9 +18,11 @@ func SetUpUserController(r *gin.Engine) *gin.Engine {
 			return
 		}
 		err = service.CreateUser(*body)
-		switch err.(type) {
-		case exception.GlobalException:
-			globalException := err.(exception.GlobalException)
+		var globalException exception.GlobalException
+		switch {
+		case errors.As(err, &globalException):
+			var globalException exception.GlobalException
+			errors.As(err, &globalException)
 			response := globalException.ToErrorResponse()
 			c.JSON(globalException.Code, response)
 			return

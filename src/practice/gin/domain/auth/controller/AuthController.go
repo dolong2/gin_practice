@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"errors"
 	"fmt"
 	"gin_practice/src/practice/gin/domain/auth/controller/dto/request"
 	"gin_practice/src/practice/gin/domain/auth/service"
@@ -21,10 +22,12 @@ func SetUpAuthController(r *gin.Engine) *gin.Engine {
 			return
 		}
 		response, err := service.SignIn(*body)
-		switch err.(type) {
-		case exception.GlobalException:
+		var globalException exception.GlobalException
+		switch {
+		case errors.As(err, &globalException):
 			fmt.Println(err.Error())
-			globalException := err.(exception.GlobalException)
+			var globalException exception.GlobalException
+			errors.As(err, &globalException)
 			response := globalException.ToErrorResponse()
 			c.JSON(globalException.Code, response)
 			return
@@ -34,10 +37,12 @@ func SetUpAuthController(r *gin.Engine) *gin.Engine {
 
 	group.DELETE("", func(c *gin.Context) {
 		err := service.SignOut(c)
-		switch err.(type) {
-		case exception.GlobalException:
+		var globalException exception.GlobalException
+		switch {
+		case errors.As(err, &globalException):
 			fmt.Println(err.Error())
-			globalException := err.(exception.GlobalException)
+			var globalException exception.GlobalException
+			errors.As(err, &globalException)
 			response := globalException.ToErrorResponse()
 			c.JSON(globalException.Code, response)
 			return
