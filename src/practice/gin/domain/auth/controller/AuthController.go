@@ -50,5 +50,20 @@ func SetUpAuthController(r *gin.Engine) *gin.Engine {
 		c.Status(http.StatusOK)
 	})
 
+	group.PATCH("", func(c *gin.Context) {
+		response, err := service.ReissueToken(c)
+		var globalException exception.GlobalException
+		switch {
+		case errors.As(err, &globalException):
+			fmt.Println(err.Error())
+			var globalException exception.GlobalException
+			errors.As(err, &globalException)
+			response := globalException.ToErrorResponse()
+			c.JSON(globalException.Code, response)
+			return
+		}
+		c.JSON(http.StatusOK, response)
+	})
+
 	return r
 }
