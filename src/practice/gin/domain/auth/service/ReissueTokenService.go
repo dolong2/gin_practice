@@ -15,6 +15,10 @@ func ReissueToken(context *gin.Context) (*response.ReissueTokenResponse, error) 
 	if err != nil {
 		return nil, err
 	}
+	refreshToken, err := redis.GetValue("RefreshToken", user.Email)
+	if err != nil {
+		return nil, jwtException.JwtExpireException()
+	}
 	accessToken, accessErr := jwt.CreateAccessToken(user.Email)
 	refreshToken, refreshErr := jwt.CreateRefreshToken(user.Email)
 	redis.SaveValue("RefreshToken", user.Email, refreshToken, int(jwt.GetRefreshExp().Microseconds()))

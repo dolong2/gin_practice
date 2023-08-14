@@ -45,6 +45,18 @@ func DeleteValue(hashName string, key string) error {
 	return nil
 }
 
+func GetValue(hashName string, key string) (string, error) {
+	if connection == nil {
+		return "", exception.ConnectionNullException()
+	}
+	conn := *connection
+	result, err := redis.String(conn.Do("HGET", hashName+":1", key))
+	if err != nil {
+		return "", err
+	}
+	return result, nil
+}
+
 func CloseConn() error {
 	if connection == nil {
 		return exception.ConnectionNullException()
