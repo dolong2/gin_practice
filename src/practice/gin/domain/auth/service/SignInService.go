@@ -13,21 +13,22 @@ import (
 	"time"
 )
 
-func SignIn(request request.SignInRequest) (response.SignInResponse, error) {
+func SignIn(request request.SignInRequest) (*response.SignInResponse, error) {
 	if !userRepository.ExistsByEmail(request.Email) {
-		return response.SignInResponse{}, userException.UserNotFoundException()
+		return nil, userException.UserNotFoundException()
 	}
 	user, _ := userRepository.GetByEmail(request.Email)
 	if !passwordEncoder.MatchPassword(request.Password, user.Password) {
-		return response.SignInResponse{}, exception.PasswordMisMatchException()
+		return nil, exception.PasswordMisMatchException()
 	}
 	accessToken, accessErr := jwt.CreateAccessToken(user.Email)
 	refreshToken, refreshErr := jwt.CreateRefreshToken(user.Email)
 	redis.SaveValue("RefreshToken", user.Email, refreshToken, int(jwt.GetRefreshExp().Microseconds()))
 	if accessErr != nil || refreshErr != nil {
-		return response.SignInResponse{}, jwtException.JwtGenerateException()
+		return nil, jwtException.JwtGenerateException()
 	}
 	accessExp := jwt.GetAccessExp()
 	refreshExp := jwt.GetRefreshExp()
-	return response.ToTokenResponse(accessToken, refreshToken, time.Now().Add(accessExp), time.Now().Add(refreshExp)), nil
+	tokenResponse := response.ToTokenResponse(accessToken, refreshToken, time.Now().Add(accessExp), time.Now().Add(refreshExp))
+	return &tokenResponse, nil
 }
