@@ -7,19 +7,16 @@ import (
 	"time"
 )
 
-var accessType = "ACCESS"
-var refreshType = "REFRESH"
-
 func CreateAccessToken(userEmail string) (string, error) {
 	accessSecret := os.Getenv("ACCESS_SECRET")
 	accessExp, _ := strconv.Atoi(os.Getenv("ACCESS_EXP"))
-	return createToken(userEmail, accessSecret, accessType, accessExp)
+	return createToken(userEmail, accessSecret, AccessType, accessExp)
 }
 
 func CreateRefreshToken(userEmail string) (string, error) {
 	refreshSecret := os.Getenv("REFRESH_SECRET")
 	refreshExp, _ := strconv.Atoi(os.Getenv("REFRESH_EXP"))
-	return createToken(userEmail, refreshSecret, accessType, refreshExp)
+	return createToken(userEmail, refreshSecret, RefreshType, refreshExp)
 }
 
 func createToken(userEmail string, secret string, tokenType string, ttl int) (string, error) {
