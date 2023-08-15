@@ -11,7 +11,10 @@ import (
 )
 
 func ReissueToken(context *gin.Context) (*response.ReissueTokenResponse, error) {
-	jwt.ValidTokenType(context.Request, jwt.RefreshType)
+	_, err := jwt.ValidTokenType(context.Request, jwt.RefreshType)
+	if err != nil {
+		return nil, err
+	}
 	user, err := security.GetUser(context)
 	if err != nil {
 		return nil, err
