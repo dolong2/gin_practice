@@ -11,6 +11,7 @@ import (
 )
 
 func ReissueToken(context *gin.Context) (*response.ReissueTokenResponse, error) {
+	jwt.ValidTokenType(context.Request, jwt.RefreshType)
 	user, err := security.GetUser(context)
 	if err != nil {
 		return nil, err
