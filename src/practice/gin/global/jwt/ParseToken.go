@@ -59,3 +59,14 @@ func ExtractTokenMetadata(r *http.Request, key string) (*string, error) {
 	}
 	return nil, err
 }
+
+func ValidTokenType(r *http.Request, tokenType string) (bool, error) {
+	metaData, err := ExtractTokenMetadata(r, "type")
+	if err != nil {
+		return false, err
+	}
+	if *metaData == tokenType {
+		return true, nil
+	}
+	return false, exception.InvalidTokenException()
+}
