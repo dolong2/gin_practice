@@ -5,7 +5,7 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(r *gin.Engine) *gin.Engine {
+func SetupRouter(r *gin.Engine) {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 
@@ -43,6 +43,4 @@ func SetupRouter(r *gin.Engine) *gin.Engine {
 	authorized.POST("admin", func(c *gin.Context) {
 		service.AddAdmin(c)
 	})
-
-	return r
 }

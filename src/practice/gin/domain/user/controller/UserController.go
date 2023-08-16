@@ -10,7 +10,7 @@ import (
 	"net/http"
 )
 
-func SetUpUserController(r *gin.Engine) *gin.Engine {
+func SetUpUserController(r *gin.Engine) {
 	group := r.Group("/users")
 	group.Use(filter.JwtReqFilter)
 	r.POST("/users", func(c *gin.Context) {
@@ -46,6 +46,4 @@ func SetUpUserController(r *gin.Engine) *gin.Engine {
 		}
 		c.Status(http.StatusCreated)
 	})
-
-	return r
 }

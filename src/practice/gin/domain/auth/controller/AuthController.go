@@ -11,7 +11,7 @@ import (
 	"net/http"
 )
 
-func SetUpAuthController(r *gin.Engine) *gin.Engine {
+func SetUpAuthController(r *gin.Engine) {
 	group := r.Group("/auth")
 	group.Use(filter.JwtReqFilter)
 	r.POST("/auth", func(c *gin.Context) {
@@ -64,6 +64,4 @@ func SetUpAuthController(r *gin.Engine) *gin.Engine {
 		}
 		c.JSON(http.StatusOK, response)
 	})
-
-	return r
 }
