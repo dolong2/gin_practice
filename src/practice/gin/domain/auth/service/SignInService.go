@@ -23,7 +23,7 @@ func SignIn(request request.SignInRequest) (*response.SignInResponse, error) {
 	}
 	accessToken, accessErr := jwt.CreateAccessToken(user.Email)
 	refreshToken, refreshErr := jwt.CreateRefreshToken(user.Email)
-	redis.SaveValue("RefreshToken", user.Email, refreshToken, int(jwt.GetRefreshExp().Microseconds()))
+	redis.SaveValue(jwt.RefreshToken, user.Email, refreshToken, int(jwt.GetRefreshExp().Microseconds()))
 	if accessErr != nil || refreshErr != nil {
 		return nil, jwtException.JwtGenerateException()
 	}
