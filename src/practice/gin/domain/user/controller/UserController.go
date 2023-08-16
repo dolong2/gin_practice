@@ -34,7 +34,17 @@ func SetUpUserController(r *gin.Engine) *gin.Engine {
 	})
 
 	group.DELETE("", func(c *gin.Context) {
-		service.DeleteUser(c)
+		err := service.DeleteUser(c)
+		var globalException exception.GlobalException
+		switch {
+		case errors.As(err, &globalException):
+			var globalException exception.GlobalException
+			errors.As(err, &globalException)
+			response := globalException.ToErrorResponse()
+			c.JSON(globalException.Code, response)
+			return
+		}
+		c.Status(http.StatusCreated)
 	})
 
 	return r
