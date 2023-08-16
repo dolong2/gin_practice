@@ -5,17 +5,17 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func SetupRouter(r *gin.Engine) {
+func SetupRouter(g *gin.RouterGroup) {
 	// Disable Console Color
 	// gin.DisableConsoleColor()
 
 	// Ping test
-	r.GET("/ping", func(c *gin.Context) {
+	g.GET("/ping", func(c *gin.Context) {
 		service.Pong(c)
 	})
 
 	// Get user value
-	r.GET("/user/:name", func(c *gin.Context) {
+	g.GET("/user/:name", func(c *gin.Context) {
 		service.GetUser(c)
 	})
 
@@ -26,7 +26,7 @@ func SetupRouter(r *gin.Engine) {
 	//	  "foo":  "bar",
 	//	  "manu": "123",
 	//}))
-	authorized := r.Group("/", gin.BasicAuth(gin.Accounts{
+	authorized := g.Group("/", gin.BasicAuth(gin.Accounts{
 		"foo":  "bar", // user:foo password:bar
 		"manu": "123", // user:manu password:123
 	}))

@@ -10,10 +10,10 @@ import (
 	"net/http"
 )
 
-func SetUpUserController(r *gin.Engine) {
-	group := r.Group("/users")
+func SetUpUserController(g *gin.RouterGroup) {
+	group := g.Group("/users")
 	group.Use(filter.JwtReqFilter)
-	r.POST("/users", func(c *gin.Context) {
+	g.POST("/users", func(c *gin.Context) {
 		body := &request.SignUpRequest{}
 		err := c.Bind(body)
 		if err != nil {

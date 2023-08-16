@@ -18,8 +18,9 @@ func main() {
 
 func setupRouter() *gin.Engine {
 	engine := gin.Default()
-	exampleController.SetupRouter(engine)
-	userController.SetUpUserController(engine)
-	controller.SetUpAuthController(engine)
+	group := engine.Group("")
+	exampleController.SetupRouter(group)
+	userController.SetUpUserController(group)
+	controller.SetUpAuthController(group)
 	return engine
 }

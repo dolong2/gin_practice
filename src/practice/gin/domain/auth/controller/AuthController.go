@@ -11,10 +11,10 @@ import (
 	"net/http"
 )
 
-func SetUpAuthController(r *gin.Engine) {
-	group := r.Group("/auth")
+func SetUpAuthController(g *gin.RouterGroup) {
+	group := g.Group("/auth")
 	group.Use(filter.JwtReqFilter)
-	r.POST("/auth", func(c *gin.Context) {
+	g.POST("/auth", func(c *gin.Context) {
 		body := &request.SignInRequest{}
 		err := c.Bind(body)
 		if err != nil {
